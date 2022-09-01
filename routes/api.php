@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'product'], function () {
+    Route::get('index', [ProductsController::class, 'index'])->name('product.index');
+    Route::get('find', [ProductsController::class, 'find'])->name('product.find');
+    Route::post('store', [ProductsController::class, 'store'])->name('product.store');
 });
