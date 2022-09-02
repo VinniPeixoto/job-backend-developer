@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Services\Products\DeleteProductsService;
 use App\Services\Products\GetProductsService;
 use App\Services\Products\StoreProductsService;
@@ -17,6 +18,13 @@ use Illuminate\Support\Arr;
 
 class ProductsController extends Controller
 {
+    public function findAll()
+    {
+        $products = Product::all();
+
+        return new ProductCollection($products);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
