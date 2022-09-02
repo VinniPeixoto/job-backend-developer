@@ -13,7 +13,7 @@ class GetProductsService
             return Product::find(Arr::get($request, 'id'));
         } else {
             return Product::filterNameOrCategory(Arr::get($request, 'name'))
-                ->filterCategory(Arr::get($request, 'category'))
+                ->filterOnlyCategory(Arr::get($request, 'category'))
                 ->filterImage(Arr::get($request, 'image'))
                 ->get();
         }

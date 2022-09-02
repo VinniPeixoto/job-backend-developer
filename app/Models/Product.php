@@ -28,7 +28,7 @@ class Product extends Model
                 ->orWhere('category', 'like', "%{$name}%");
         });
     }
-    public function scopeFilterCategory(Builder $builder, $name)
+    public function scopeFilterOnlyCategory(Builder $builder, $name)
     {
         return $builder->when($name, function (Builder $builder, $name) {
             return $builder->where('category', $name);
