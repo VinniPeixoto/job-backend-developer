@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'product'], function () {
+    Route::get('find-all', [ProductsController::class, 'findAll'])->name('api.product.find-all');
     Route::get('find', [ProductsController::class, 'find'])->name('api.product.find');
     Route::post('store', [ProductsController::class, 'store'])->name('api.product.store');
     Route::match(['put', 'path'],'update', [ProductsController::class, 'update'])->name('api.product.update');

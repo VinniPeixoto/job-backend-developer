@@ -23,7 +23,7 @@ class ImportProductsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'products:import {--id=*}';
+    protected $signature = 'products:import {--id=}';
 
     /**
      * The console command description.
@@ -40,13 +40,13 @@ class ImportProductsCommand extends Command
     public function handle()
     {
         try {
-            $this->info('Starting import product from fakestoreapi');
             $id = $this->option('id');
-            if (count($id) == 0) {
+            if (!$id) {
                 $this->error('Please enter any id for import. Ex: "php artisan products:import --id=1"');
                 die();
             }
-            $product = $this->importProductsByExternalApiService->run($id[0]);
+            $this->info('Starting import product from fakestoreapi');
+            $product = $this->importProductsByExternalApiService->run($id);
             $this->info("Import product '{$product->name}' completed successful");
         } catch (\Exception $exception) {
             $this->error("{$exception->getMessage()} \n");
