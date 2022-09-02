@@ -7,8 +7,10 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
+use App\Services\Products\DeleteProductsService;
 use App\Services\Products\GetProductsService;
 use App\Services\Products\StoreProductsService;
+use App\Services\Products\UpdateProductsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
@@ -54,21 +56,31 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateProductRequest $request
-     * @return Response
+     * @return ProductResource|\Illuminate\Http\JsonResponse|Response
      */
-    public function update(UpdateProductRequest $request)
+    public function update(UpdateProductRequest $request, UpdateProductsService $updateService)
     {
-        //
+        try {
+            $request->validated();
+
+            $product = $updateService->run($request->all());
+
+            return new ProductResource($product);
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id, DeleteProductsService $deleteProductsService)
     {
-        //
+        $deleted = $deleteProductsService->run($id);
+
+        return response()->json(['message' => $deleted['message']], $deleted['status']);
     }
 }
